@@ -1,0 +1,13 @@
+.btn-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+button {
+  padding: 16px;
+  font-size: large;
+  margin: 0 24px;
+  cursor: pointer;
+}
