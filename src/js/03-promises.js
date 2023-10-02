@@ -18,13 +18,17 @@ const form = document.querySelector('.form');
 const delayInput = document.querySelector('input[name="delay"]');
 const stepInput = document.querySelector('input[name="step"]');
 const amountInput = document.querySelector('input[name="amount"]');
-const submitButton = document.querySelector('button[type="submit"]');
 
 form.addEventListener('submit', function (event) {
   event.preventDefault();
   const delay = Number(delayInput.value);
   const step = Number(stepInput.value);
   const amount = Number(amountInput.value);
+
+  if (step <= 0 || delay <= 0 || amount <= 0) {
+    Notiflix.Notify.failure('Please make sure all values are greater than 0');
+    return;
+  }
 
   for (let i = 0; i < amount; i++) {
     const position = i + 1;
@@ -47,7 +51,3 @@ form.addEventListener('submit', function (event) {
 delayInput.setAttribute('min', '0');
 stepInput.setAttribute('min', '0');
 amountInput.setAttribute('min', '0');
-
-amountInput.addEventListener('input', function () {
-  submitButton.disabled = this.value <= 0;
-});
