@@ -5,7 +5,6 @@ import Notiflix from 'notiflix';
 const startBtn = document.querySelector('[data-start]');
 const resetBtn = document.querySelector('[data-reset]');
 const inputField = document.querySelector('#datetime-picker');
-let timerIsActive = false;
 let intervalId;
 
 const timerFields = {
@@ -46,10 +45,9 @@ function updateTimer(targetDate) {
 
     if (timeDif <= 0) {
       clearInterval(intervalId);
-      timerIsActive = false;
       Object.values(timerFields).forEach(field => (field.textContent = '00'));
       inputField.disabled = false;
-      startBtn.disabled = true;
+      startBtn.disabled = false;
       resetBtn.disabled = true;
       return;
     }
@@ -83,25 +81,22 @@ function convertMs(ms) {
 }
 
 startBtn.addEventListener('click', () => {
-  if (!timerIsActive) {
-    const selectedDate = flatpickr.parseDate(inputField.value, 'Y-m-d H:i');
-    if (selectedDate <= new Date()) {
-      Notiflix.Notify.failure('Please choose a date in the future');
-    } else {
-      updateTimer(selectedDate);
-      timerIsActive = true;
-      inputField.disabled = true;
-      resetBtn.disabled = false;
-    }
+  const selectedDate = flatpickr.parseDate(inputField.value, 'Y-m-d H:i');
+  if (selectedDate <= new Date()) {
+    Notiflix.Notify.failure('Please choose a date in the future');
+  } else {
+    updateTimer(selectedDate);
+    inputField.disabled = true;
+    resetBtn.disabled = false;
+    startBtn.disabled = true;
   }
 });
 
 resetBtn.addEventListener('click', () => {
   clearInterval(intervalId);
-  timerIsActive = false;
   Object.values(timerFields).forEach(field => (field.textContent = '00'));
   inputField.disabled = false;
   inputField.value = '';
   resetBtn.disabled = true;
-  startBtn.disabled = true;
+  startBtn.disabled = false;
 });
